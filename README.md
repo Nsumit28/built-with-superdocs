@@ -1,6 +1,8 @@
 # Built with SuperDocs — an attribution badge, and a gallery with a bar
 
-![built with SuperDocs](badge.svg)
+[![built with SuperDocs](https://nsumit28.github.io/built-with-superdocs/badge.svg)](https://nsumit28.github.io/built-with-superdocs/)
+
+*(That badge is the exact snippet from [SNIPPETS.md](SNIPPETS.md), pasted unmodified — so this README is also the test that it survives GitHub's image proxy.)*
 
 A badge projects can put in their README, a gallery it links to, and — the part
 that actually matters — **a written rule for who gets in and why anyone is turned
