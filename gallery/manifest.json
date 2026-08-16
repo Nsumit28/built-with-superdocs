@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "gallery": {
+    "title": "Built with SuperDocs",
+    "standfirst": "Projects that used SuperDocs to do real work on a real document. Every entry is submitted by the person who built it, and every entry links to something you can open and check.",
+    "base_url": "https://nsumit28.github.io/built-with-superdocs/",
+    "curation": "CURATION.md",
+    "updated": "2026-08-16",
+    "submit": "SUBMITTING.md"
+  },
+  "_note_on_size": "This gallery opens with one entry. That is the honest state of it: entries are submitted by their owners and verified against a written bar, and exactly one project has met it so far. Padding the list with builds whose owners never asked to be listed would make the badge mean less, which is the only thing the gallery has to protect.",
+  "entries": [
+    {
+      "slug": "tracked-change-author-blank",
+      "name": "Why a tracked change shows a blank author",
+      "summary": "A troubleshooting page for a Word tracked-changes failure that agents and docx libraries both trip over, drafted and revised inside the document rather than beside it.",
+      "link": "https://nsumit28.github.io/docx-notes/tracked-change-author-blank/",
+      "superdocs_surfaces": [
+        "Section-precision editing \u2014 each revision named one section and left the rest byte-identical",
+        "HTML export of the finished document"
+      ],
+      "evidence": {
+        "what": "The published page carries its own disclosure, and the edit responses are kept as artifacts alongside the study that shaped it.",
+        "url": "https://nsumit28.github.io/docx-notes/what-a-cited-page-contains/"
+      },
+      "submitted_by": "the project's author",
+      "reviewed_on": "2026-08-16",
+      "decision": "listed",
+      "reviewer_note": "Meets the bar on all three counts: the document is real and public, SuperDocs did work a plain text editor could not have done as safely, and the edits are evidenced rather than asserted.",
+      "conflict": "Submitted and reviewed by the same person \u2014 this is the curator's own project. Held to the same three tests as anything else, and disclosed here because the disclosure is the only thing that keeps a one-entry gallery honest."
+    }
+  ],
+  "not_listed": [
+    {
+      "name": "This gallery, and the badge it hands out",
+      "decision": "declined",
+      "reason_code": "R5",
+      "why": "It is the gallery, so R5 applies whatever else is true of it. Stated precisely rather than flatteringly: SuperDocs was used on this project \u2014 the curation rule was revised through the API and exported \u2014 but both sentences it drafted were rejected on review and the one that shipped was written by hand. A gallery that lists itself to look busier is the exact failure the bar exists to prevent.",
+      "reviewed_on": "2026-08-16"
+    }
+  ]
+}
