@@ -1,128 +1,95 @@
-# How entries get in, and why they get turned down
+# What gets listed
 
-A badge is worth exactly as much as the thing standing behind it. If any project
-that wants the badge can have it, the badge says nothing, and a gallery that
-lists everything is a directory, not a signal.
+The badge only means something if the list behind it has been checked. These are
+the rules, written down in advance so a rejection comes with a reason instead of
+silence.
 
-So this is the bar, written down before anything was submitted, and the reasons
-for turning an entry down, written down before anyone had to be turned down. If
-your entry is declined you will get one of the numbered reasons below, not a
-silence and not a matter of taste.
+## The three checks
 
----
+A reviewer applies these in order and stops at the first one that fails.
 
-## The bar
+### 1. There's something to open
 
-Three tests. An entry has to pass **all three**. A reviewer applies them in
-order and stops at the first failure.
+A published page, a repository, a file in a release, a public export. Not a
+screenshot of one, not a private link, not a description of something that exists
+elsewhere.
 
-### 1. There is a real document, and it can be opened
+### 2. SuperDocs did work that mattered
 
-Something a reviewer can click: a published page, a repository, a file in a
-release, a public export. Not a screenshot of it. Not a private link. Not a
-description of a document that exists somewhere.
+Name the feature you used and what it did — editing inside the document, tracked
+changes, export, the API, the MCP server. Then apply the test:
 
-*Why this one first:* it is the only test that can be settled in ten seconds,
-and everything after it depends on the artifact being real.
+> If you could have produced the same result, at the same risk, by typing into a
+> plain text editor, it doesn't qualify.
 
-### 2. SuperDocs did work that mattered to the outcome
+Most rejections happen here, and that's intended. "I opened my document in
+SuperDocs" isn't use. "Section editing let me revise one clause of a contract
+without touching the eleven around it, and I can show the others didn't change"
+is.
 
-Name the surface used and what it changed — editing inside the document,
-tracked changes, export, the API, the MCP surface. Then the counterfactual:
+### 3. Someone else can check it
 
-> If the same artifact could have been produced, at the same risk, by typing
-> into a plain text editor, the entry does not qualify.
+A second link a stranger can open: a commit, a diff, an exported file, a public
+write-up, a pull request. "We use it internally" can't be verified, and an
+unverifiable entry is worth less than no entry.
 
-A worked example, taken from this rule's own revision history: a change that
-rewrote the section you are reading while every other section came back
-byte-identical — the decline table below included — qualifies, because it is
-checkable and because doing it by hand is exactly the thing that goes wrong
-quietly. Opening the same file, reading it, and saving it unchanged does not.
+## Two conditions
 
-This is the test most submissions will fail, and it is meant to be. "I opened
-it in SuperDocs" is not use. "Section-precision edits let me revise one clause
-of a contract without touching the eleven around it" is.
+- **You submit your own project.** Nothing gets added by scraping other people's
+  work. Being written about without being asked isn't a favour.
+- **Both links are safe to publish.** No credentials, no personal data, nothing
+  under NDA, and no private individuals named.
 
-### 3. The claim is evidenced, not asserted
+## Why entries get rejected
 
-A second link that lets a reviewer check the claim in test 2: a commit, a diff,
-an exported file, a public write-up, a PR. "We use it internally" is not
-checkable, and unverifiable praise is worth less to SuperDocs than no entry.
+The reviewer records one of these next to the entry, in public.
 
-### And two preconditions
-
-- **The owner submits it.** Nothing is harvested. A project is not listed
-  because a curator found it and thought it looked good — being written about
-  without asking is not a favour.
-- **It is safe to link.** No credentials, no personal data, nothing under an NDA,
-  nothing that names a private individual.
-
----
-
-## Reasons an entry is declined
-
-The reviewer records one of these in the manifest, in public, next to the entry.
-
-| | reason |
+| Code | Reason |
 |---|---|
-| **R1** | **Not submitted by its owner.** Someone else's project, however good. |
-| **R2** | **Nothing to open.** The evidence is a screenshot, a dead link, or private. |
-| **R3** | **SuperDocs was incidental.** A plain text editor would have produced the same thing at the same risk. |
-| **R4** | **Not real work.** A hello-world, or a document created to qualify for the badge. |
-| **R5** | **Self-referential.** The project is the badge, the gallery, or exists to be listed in it. |
-| **R6** | **Unsafe to link.** Credentials, personal data, confidential or NDA'd material, or a named private individual. |
-| **R7** | **Makes a claim about SuperDocs that isn't true.** Including capabilities it doesn't have. Correct it and resubmit. |
-| **R8** | **Unverifiable in the review window.** Not a judgement on the project — resubmit when the evidence is public. |
+| **R1** | Not submitted by the person who built it |
+| **R2** | Nothing to open — the evidence is a screenshot, a dead link, or private |
+| **R3** | SuperDocs was incidental; a plain text editor would have done the same job |
+| **R4** | Not real work — a hello-world, or a document made to qualify for the badge |
+| **R5** | The project is the badge, the gallery, or exists to be listed |
+| **R6** | Unsafe to publish — credentials, personal data, NDA material, or a named private individual |
+| **R7** | Claims something about SuperDocs that isn't true |
+| **R8** | Couldn't be verified within the review window |
 
-R7 and R8 are explicitly re-submittable. So is anything else, once the reason is
-fixed: the bar is about evidence, not about taste, and an entry that failed on
-Tuesday can pass on Thursday with a better link.
+R7 and R8 just need fixing and resubmitting. So does anything else — the checks
+are about evidence, not about whether the project is impressive.
 
----
+## How review works
 
-## The review path
+1. You open an issue or a pull request. See [SUBMITTING.md](SUBMITTING.md).
+2. Automated checks run first. They confirm the entry has an evidence link, a
+   date, and a decision with a reason. They don't judge the project.
+3. A person opens both links and applies the three checks in order.
+4. The decision goes into `gallery/manifest.json` — listed or declined — with a
+   short reason, and is merged either way. Rejections are recorded, not closed
+   quietly.
+5. This takes up to seven days. Past that it's declined as R8, which means "send
+   it again once the evidence is public".
+6. Listed entries get re-checked. If a link dies, the entry comes off the page
+   and the reason stays visible.
 
-1. **The owner opens a pull request** adding one object to
-   `gallery/manifest.json`. One entry per PR.
-2. **`lint_manifest.py` runs first.** An entry with no evidence URL, no review
-   date, or no recorded reason cannot merge — the rule is enforced by the tooling,
-   not by the reviewer remembering.
-3. **A human applies the three tests in order**, opening both links.
-4. **The verdict is written into the manifest** — `listed` or `declined`, with
-   the reason and the reviewer's one line — and merged either way. **A decline is
-   recorded, not closed in silence.**
-5. **Within seven days**, or it is declined R8 with an invitation to resubmit.
-6. **Listed entries are re-checked.** A dead link is delisted with the reason
-   kept visible, because a gallery of broken links is worse than a short one.
+## Conflicts of interest
 
----
+The gallery has one entry at the moment and it's my own project. That's marked on
+the entry itself. Anything I submit gets the same three checks as anything else,
+and the conflict gets noted each time.
 
-## Where the curator is compromised
+This repository isn't in the gallery either. It's the gallery, and listing
+yourself to make the list look busier is the thing these rules exist to prevent.
 
-The gallery currently holds one entry, and it is the curator's own page. That is
-the weakest thing about it and it would be dishonest to bury it, so it is
-disclosed on the entry itself.
+SuperDocs was used on this document — the section above was drafted through the
+API and exported — but both sentences it produced were rejected on review, and
+the one that shipped was written by hand.
 
-The rule that keeps this from rotting: **the curator's own work is held to the
-same three tests, and the conflict is stated on the entry, every time.** If the
-gallery is ever handed to SuperDocs, that disclosure line stops being necessary
-and should be dropped — but not before.
+## What this isn't
 
-And the gallery is not in the gallery. It is listed publicly as declined under
-R5, and the reason is worth stating precisely rather than flatteringly:
-SuperDocs *was* used on this project — the section above was revised through the
-API and the document exported — but both sentences it drafted were rejected on
-review, and the one that shipped was written by hand. Being the gallery is
-disqualifying on its own. A curator whose own work would be declined should say
-so before anyone else has to.
+It isn't a quality bar. Nobody is judging whether the project is good, whether
+the code is clean, or whether the idea is clever. There's one question: did
+SuperDocs do real work here, and can someone else check that it did?
 
----
-
-## What this is not
-
-It is not a quality bar. Nobody is judging whether the project is good, whether
-the writing is clean, or whether the idea is clever. The three tests ask one
-question: **did SuperDocs do real work here, and can a stranger check it?**
-
-A rough project with an honest diff gets in. A beautiful project with an
-unverifiable claim does not.
+A rough project with an honest diff gets listed. A polished one with a claim
+nobody can verify doesn't.

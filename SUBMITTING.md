@@ -1,31 +1,22 @@
-# Submitting a build
+# Submitting a project
 
-Two ways in. Both end in the same place — a reviewed entry in
-`gallery/manifest.json` — and both are answered in public.
+Read [CURATION.md](CURATION.md) first. It's short, and it tells you whether your
+project qualifies before you spend time on the submission.
 
-**Read [CURATION.md](CURATION.md) first.** It is short, and it tells you whether
-you will pass before you spend time on the submission.
+There are two ways in. Both end up in the same place: a reviewed entry in
+`gallery/manifest.json`.
 
----
+## Option 1 — open an issue
 
-## Route 1 — open an issue (easier)
+Use the **Submit a build** issue template. Its fields are the same three checks a
+reviewer applies, so filling it in honestly is the whole submission. A reviewer
+copies accepted entries into the manifest.
 
-Use the **Submit a build** issue template. Its fields are the three tests, so
-filling it in honestly *is* the submission. A reviewer transcribes the accepted
-entry into the manifest.
+Choose this if you'd rather not edit JSON.
 
-Pick this route if you would rather not touch JSON.
+## Option 2 — send a pull request
 
-## Route 2 — open a pull request (faster)
-
-Add one object to the `entries` array in `gallery/manifest.json`, then run:
-
-```bash
-python3 lint_manifest.py && python3 make_gallery.py
-```
-
-Commit both the manifest and the regenerated `gallery/index.html`. One entry per
-pull request.
+Add one object to the `entries` array in `gallery/manifest.json`:
 
 ```json
 {
@@ -33,9 +24,9 @@ pull request.
   "name": "Your project",
   "summary": "One sentence on what it is.",
   "link": "https://…",
-  "superdocs_surfaces": ["Which surface did the work, and what it changed"],
+  "superdocs_surfaces": ["Which feature you used, and what it changed"],
   "evidence": {
-    "what": "What a reviewer will see at this link.",
+    "what": "What a reviewer will find at this link.",
     "url": "https://…"
   },
   "submitted_by": "you",
@@ -45,46 +36,45 @@ pull request.
 }
 ```
 
-Leave `reviewed_on`, `decision` and `reviewer_note` empty. **They are the
-reviewer's fields, not yours** — the lint fails on a submission that fills in its
-own verdict, which is the point.
+Then run:
 
----
+```bash
+python3 lint_manifest.py
+python3 make_gallery.py
+```
 
-## What the machine checks, and what it can't
+Commit both the manifest and the regenerated `index.html`. One project per pull
+request.
 
-`.github/workflows/curation.yml` runs on every pull request. It refuses:
+Leave `reviewed_on`, `decision` and `reviewer_note` empty. Those belong to
+whoever reviews it, and the lint fails if a submission fills in its own verdict.
 
-- an entry with no evidence link, no review date, or no stated reason
-- a decline citing a reason code that was never published to submitters
-- a `gallery/index.html` that doesn't match what the manifest generates — so an
-  entry cannot be added by hand-editing the page and skipping review entirely
-- a badge that would break under GitHub's image proxy
-- a page that fetches anything on the reader's behalf
+## What happens next
 
-It cannot check the thing that matters most: whether SuperDocs did work that
-mattered. That is test 2, and it needs a human who opened both links. The
-tooling exists to protect the paper trail, not to replace the judgement.
-
-*(The checks have no third-party dependencies — plain Python. The build scripts
-for the badge need `fonttools`, `brotli` and `uharfbuzz`, but nothing in the
-review gate does.)*
-
----
-
-## After you submit
-
-- A human applies the three tests **in order**, stopping at the first failure.
-- The verdict goes into the manifest — listed **or declined** — and is merged
-  either way. A decline is recorded in public with a numbered reason.
-- **Seven days.** If it can't be verified in that window it is declined **R8**,
-  which means "resubmit when the evidence is public", not "no".
-- Every reason is re-submittable once the reason is fixed. The bar is about
-  evidence, not taste.
+1. A reviewer opens both your links.
+2. They apply the three checks from CURATION.md, in order, stopping at the first
+   failure.
+3. The decision goes into the manifest — listed or declined — with a short
+   reason, and is merged either way.
+4. Expect an answer within seven days. Past that it's declined as R8, which means
+   "send it again when the evidence is public", not "no".
 
 ## If your entry is declined
 
-You will get a number (R1–R8) and a sentence. Both are in the manifest, in
-public, next to your entry. If you think the reviewer got it wrong, say so on
-the same thread — a decline is a position someone has to defend, not a verdict
-handed down.
+You'll get a code (R1–R8) and a sentence, recorded next to your entry in public.
+Fix the reason and submit again; there's no limit on resubmissions. If you think
+the reviewer got it wrong, say so on the same thread.
+
+## What the automated checks do
+
+Every pull request runs `.github/workflows/curation.yml`, which fails if:
+
+- an entry has no evidence link, no review date, or no stated reason
+- a rejection cites a code that isn't published above
+- `index.html` doesn't match what the manifest generates, so entries can't be
+  added by editing the page and skipping review
+- the badge would break under GitHub's image proxy
+- the gallery page loads anything from the network
+
+None of these judge your project. A person does that, and no script can do it for
+them.
