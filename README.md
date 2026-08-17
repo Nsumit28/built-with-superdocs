@@ -1,111 +1,145 @@
-# Built with SuperDocs — an attribution badge, and a gallery with a bar
+# Built with SuperDocs
 
 [![built with SuperDocs](https://nsumit28.github.io/built-with-superdocs/badge.svg)](https://nsumit28.github.io/built-with-superdocs/)
 
-*(That badge is the exact snippet from [SNIPPETS.md](SNIPPETS.md), pasted unmodified — so this README is also the test that it survives GitHub's image proxy.)*
+A "built with SuperDocs" badge you can put in your README, a gallery of projects
+that use SuperDocs, and the rules for getting listed in it.
 
-A badge projects can put in their README, a gallery it links to, and — the part
-that actually matters — **a written rule for who gets in and why anyone is turned
-down.**
+**Gallery:** https://nsumit28.github.io/built-with-superdocs/
 
-A badge is worth exactly what stands behind it. Hand it to anyone who asks and it
-says nothing. So the interesting half of this build is not the SVG; it is
-[CURATION.md](CURATION.md): three tests, eight numbered decline reasons published
-before anyone had to be declined, a review path with a clock on it, and declines
-recorded in public rather than closed in silence.
+## Add the badge
 
-## What's here
+Paste this into your README:
 
-| | |
-|---|---|
-| [`badge.svg`](badge.svg) | The badge. 133 × 20, 7 KB, no external dependency of any kind |
-| [`SNIPPETS.md`](SNIPPETS.md) | Copy-paste Markdown / HTML / reStructuredText |
-| [`CURATION.md`](CURATION.md) | The bar, the decline reasons, the review path |
-| [`SUBMITTING.md`](SUBMITTING.md) | How to get listed, and what happens after |
-| [`gallery/manifest.json`](gallery/manifest.json) | The only place an entry exists |
-| [`index.html`](index.html) | The page, generated from the manifest |
-
-## How to run it
-
-```bash
-python3 make_gallery.py     # regenerate the page from the manifest
-python3 lint_manifest.py    # every entry has evidence, a date and a reason
-python3 verify_gallery.py   # the page requests nothing on the reader's behalf
-python3 verify_badge.py     # the badge survives GitHub's image proxy
-python3 test_lint.py        # 9 negative tests
-python3 test_verify.py      # 10 negative tests
+```markdown
+[![built with SuperDocs](https://nsumit28.github.io/built-with-superdocs/badge.svg)](https://nsumit28.github.io/built-with-superdocs/)
 ```
 
-Those six have **no third-party dependencies** — they are the review gate, and a
-gate that needs an install is a gate people skip. Rebuilding the badge itself
-needs `fonttools`, `brotli` and `uharfbuzz`:
+HTML and reStructuredText versions are in [SNIPPETS.md](SNIPPETS.md).
+
+Add it if your project actually uses SuperDocs. The badge links to the gallery,
+so anyone who clicks it can see the list and check.
+
+## Get listed
+
+Two ways:
+
+- Open an issue using the **Submit a build** template, or
+- Send a pull request adding your entry to [`gallery/manifest.json`](gallery/manifest.json)
+
+Either way, a person reviews it against three things:
+
+1. There is a document, page or repository they can open.
+2. SuperDocs did something a plain text editor could not have done as safely.
+3. You can point at something that shows it — a commit, a diff, an export, a
+   write-up.
+
+Most rejections are on the second one. "I opened my file in SuperDocs" is not
+enough; "I revised one clause of a contract without touching the eleven around
+it, and here's the diff" is.
+
+The full rules, including the eight reasons an entry gets turned down, are in
+[CURATION.md](CURATION.md). The submission mechanics are in
+[SUBMITTING.md](SUBMITTING.md). Rejections are posted with a reason, so you can
+fix it and resubmit.
+
+## What's in here
+
+| File | What it is |
+|---|---|
+| `badge.svg` | The badge |
+| `index.html` | The gallery page, generated from the manifest |
+| `gallery/manifest.json` | The list of entries. Nothing appears on the page unless it's here first |
+| `SNIPPETS.md` | Copy-paste versions of the badge for different formats |
+| `CURATION.md` | What gets listed, what doesn't, and why |
+| `SUBMITTING.md` | How to submit, and what happens next |
+| `make_badge.py` | Rebuilds `badge.svg` |
+| `make_gallery.py` | Rebuilds `index.html` from the manifest |
+| `verify_*.py`, `lint_manifest.py`, `test_*.py` | Checks that run on every pull request |
+
+## Running it locally
+
+Rebuilding the page and running the checks needs Python 3 and nothing else:
+
+```bash
+python3 make_gallery.py     # rebuild index.html from the manifest
+python3 lint_manifest.py    # every entry has evidence, a date and a decision
+python3 verify_gallery.py   # the page loads nothing from the network
+python3 verify_badge.py     # the badge still works through GitHub's image proxy
+python3 test_lint.py        # tests for lint_manifest.py
+python3 test_verify.py      # tests for verify_badge.py
+```
+
+Rebuilding the badge itself needs three packages, because the text is converted
+to vector outlines:
 
 ```bash
 pip install fonttools brotli uharfbuzz
 python3 make_badge.py
 ```
 
-Only the SuperDocs script talks to the network with credentials. It reads one
-environment variable:
+The script that calls the SuperDocs API needs a key:
 
 ```bash
-export SUPERDOCS_API_KEY=your-key-here   # placeholder — never commit a real key
+export SUPERDOCS_API_KEY=your-key-here
 pip install markdown
-python3 b3_superdocs.py --check          # offline: re-report the precision measurement
-python3 b3_superdocs.py --edit           # spends one operation
+
+python3 b3_superdocs.py --check    # re-run the before/after comparison, no API call
+python3 b3_superdocs.py --edit     # sends one edit, spends one operation
 ```
 
-Verify a key with `GET /v1/sessions`. Not `/v1/users/me` — that returns 401 for a
-valid `sk_` key and looks like a bad credential when it isn't.
+To check whether a key works, call `GET /v1/sessions`. `GET /v1/users/me`
+returns 401 even for a valid key, which makes a working key look broken.
 
-### Where the CI gate does and doesn't run
+## About the badge
 
-`.github/workflows/curation.yml` is a real gate **in a standalone gallery repo**,
-where it sits at the root. Vendored inside someone else's repository as a project
-folder it does not execute — GitHub only runs workflows from the repository root,
-and this project deliberately modifies nothing outside its own folder. Read it
-there as the review process written down and runnable by hand, not as CI that is
-currently running. The six commands above are that gate.
+- 133 × 20 px, about 7 KB, and it makes no external requests.
+- The text is vector outlines rather than live text. GitHub serves README images
+  through a proxy that blocks `@font-face`, and Space Grotesk (the typeface
+  SuperDocs uses) isn't installed on people's machines, so a normal text SVG
+  would fall back to Arial on most of them.
+- Colours are taken from superdocs.app's stylesheet: coral `#f97766`, near-black
+  `#110b0b`, cream `#fbfaf6`. Contrast is 18.7:1 for the left half and 7.3:1 for
+  the right. White on coral only reaches 2.67:1, which fails WCAG AA, so it
+  isn't used.
+- There's a thin light border so the dark half stays visible on GitHub's dark
+  theme, where the page background is nearly the same colour.
 
-## Two things that were measured rather than assumed
+`camo_sim.py` serves the badge locally with the same headers GitHub's proxy
+sends, so you can test changes to it before pushing.
 
-**The badge contains no live text.** Every letter is an outline path. That is not
-a stylistic choice — GitHub serves README images through its camo proxy, and camo
-returns `default-src 'none'` with no `font-src`, so `@font-face` is blocked
-outright. A live-text badge falls back to whatever font the reader happens to
-have, and SuperDocs' own typeface ships on no operating system. `camo_sim.py`
-serves the badge under camo's exact headers and lets a browser decode it, so the
-policy is applied rather than reasoned about.
+## SuperDocs features this project uses
 
-**Contrast was computed, not eyeballed.** Cream on near-black is 18.7:1;
-near-black on coral is 7.3:1. White on coral — the obvious first instinct —
-measures 2.67:1 and was rejected on the number.
+- **Chat editing** (`POST /v1/chat`) — used on `CURATION.md`, this project's own
+  rules document.
+- **Export** (`POST /v1/documents/export`) — returns a file rather than JSON.
 
-## Which SuperDocs features this build uses
+The before and after documents are in `out/`. Section editing worked as
+described: the section I asked about changed and the other nine came back
+identical, including a table.
 
-- **Editing inside the document, via `POST /v1/chat`** — used on `CURATION.md`,
-  this project's own rule. Section precision held: nine of ten sections came back
-  byte-identical, the decline table untouched, across two independent sessions.
-- **Export, via `POST /v1/documents/export`** — returns a file, not JSON.
+I didn't keep either sentence the AI wrote. The first answered a different
+question than the section was asking, and the second made a claim about
+SuperDocs that I hadn't tested. The paragraph in `CURATION.md` is mine.
 
-Both sentences the AI drafted were **rejected on review** — one on the wrong
-argument entirely, one containing a capability claim that had never been tested.
-The sentence that shipped was written by hand. That is in the rule document too,
-because a rule that misstates its own history is worth nothing.
+## Why there's only one entry
 
-## A note on the one entry
+The gallery is new. Entries come from the people who built the projects, so it
+fills up as people submit. The one entry there now is my own project, which is
+noted on the entry itself.
 
-The gallery opens with a single entry, and it is the curator's own project, which
-is disclosed on the entry itself. Padding it with builds whose owners never asked
-to be listed would break the precondition the whole thing rests on — entries come
-from their owners, nothing is harvested.
+This repository isn't listed either. It's the gallery, and the gallery doesn't
+list itself.
 
-And this project is **listed publicly as declined under R5**. It is the gallery;
-being the gallery is disqualifying on its own. A curator whose own work would be
-declined should say so before anyone else has to.
+## A note on the CI workflow
+
+`.github/workflows/curation.yml` runs the checks above on every pull request. It
+works here because it sits at the root of the repository. If you copy this
+project into a folder inside another repository, GitHub won't run it — workflows
+only run from the repository root.
 
 ---
 
-Built by **Sumit Negi** as a Round 2 candidate submission for
+MIT licensed. Built by Sumit Negi as a Round 2 candidate submission for
 [@superdocsapp](https://twitter.com/superdocsapp). Not an official SuperDocs
-property.
+project.
